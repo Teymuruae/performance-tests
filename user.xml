@@ -1,0 +1,8 @@
+<user>
+    <name>Иван</name>
+    <age>33</age>
+    <address>
+        <country>Russia</country>
+        <city>Moscow</city>
+    </address>
+</user>
