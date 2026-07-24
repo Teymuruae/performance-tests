@@ -1,7 +1,7 @@
 from pydantic import BaseModel, HttpUrl
 
 
-class DocumentDict(BaseModel):
+class DocumentSchema(BaseModel):
     """
     Описание структуры документа.
     """
@@ -9,15 +9,15 @@ class DocumentDict(BaseModel):
     document: str
 
 
-class GetTariffDocumentResponseDict(BaseModel):
+class GetTariffDocumentResponseSchema(BaseModel):
     """
     Описание структуры ответа получения документа тарифа.
     """
-    tariff: DocumentDict
+    tariff: DocumentSchema
 
 
-class GetContractDocumentResponseDict(BaseModel):
+class GetContractDocumentResponseSchema(BaseModel):
     """
     Описание структуры ответа получения документа контракта.
     """
-    contract: DocumentDict
+    contract: DocumentSchema
