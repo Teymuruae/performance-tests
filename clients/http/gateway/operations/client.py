@@ -1,4 +1,3 @@
-
 from httpx import Response, QueryParams
 
 from clients.http.client import HTTPClient
@@ -64,103 +63,110 @@ class OperationsGatewayHTTPClient(HTTPClient):
            :param query: Словарь с параметрами запроса, например: {'accountId': '123'}.
            :return: Объект httpx.Response с данными об операции.
            """
-        return self.get(f"/api/v1/operations/operations-summary.", params=QueryParams(**query.model_dump(by_alias=True)))
+        return self.get(f"/api/v1/operations/operations-summary.",
+                        params=QueryParams(**query.model_dump(by_alias=True)))
 
     def get_operations_summary(self, query: GetOperationsSummaryQuerySchema) -> GetOperationsSummaryResponseSchema:
         response = self.get_operations_summary_api(query)
         return GetOperationsSummaryResponseSchema.model_validate_json(response.text)
 
-    def make_fee_operation_api(self, request: MakeFeeOperationRequestSchema) -> Response:
+    def make_fee_operation_api(self, card_id: str, account_id: str) -> Response:
         """
           Выполняет POST-запрос для создания операции комиссии.
 
-          :param request: Словарь с status, amount, cardId, accountId
+          :params card_id, account_id
           :return: Объект httpx.Response с результатом операции.
           """
+        request = MakeFeeOperationRequestSchema(card_id=card_id, account_id=account_id)
         return self.post("/api/v1/operations/make-fee-operation", json=request.model_dump(by_alias=True))
 
-    def make_fee_operation(self, request: MakeFeeOperationRequestSchema) -> MakeFeeOperationResponseSchema:
-        response = self.make_fee_operation_api(request)
+    def make_fee_operation(self, card_id: str, account_id: str) -> MakeFeeOperationResponseSchema:
+        response = self.make_fee_operation_api(card_id, account_id)
         return MakeFeeOperationResponseSchema.model_validate_json(response.text)
 
-    def make_top_up_operation_api(self, request: MakeTopUpOperationRequestSchema) -> Response:
+    def make_top_up_operation_api(self, card_id: str, account_id: str) -> Response:
         """
               Выполняет POST-запрос для создания операции пополнения.
 
-              :param request: Словарь с status, amount, cardId, accountId
+              :params card_id, account_id
               :return: Объект httpx.Response с результатом операции.
               """
+        request = MakeTopUpOperationRequestSchema(card_id=card_id, account_id=account_id)
         return self.post("/api/v1/operations/make-top-up-operation", json=request.model_dump(by_alias=True))
 
-    def make_top_up_operation(self, request: MakeTopUpOperationRequestSchema) -> MakeTopUpOperationResponseSchema:
-        response = self.make_top_up_operation_api(request)
+    def make_top_up_operation(self, card_id: str, account_id: str) -> MakeTopUpOperationResponseSchema:
+        response = self.make_top_up_operation_api(card_id, account_id)
         return MakeTopUpOperationResponseSchema.model_validate_json(response.text)
 
-    def make_cashback_operation_api(self, request: MakeCashbackOperationRequestSchema) -> Response:
+    def make_cashback_operation_api(self, card_id: str, account_id: str) -> Response:
         """
               Выполняет POST-запрос для создания операции кэшбэка.
 
-              :param request: Словарь с status, amount, cardId, accountId
+              :params card_id, account_id
               :return: Объект httpx.Response с результатом операции.
               """
+        request = MakeCashbackOperationRequestSchema(card_id=card_id, account_id=account_id)
         return self.post("/api/v1/operations/make-cashback-operation", json=request.model_dump(by_alias=True))
 
-    def make_cashback_operation(self, request: MakeCashbackOperationRequestSchema) -> MakeCashbackOperationResponseSchema:
-        response = self.make_cashback_operation_api(request)
+    def make_cashback_operation(self, card_id: str, account_id: str) -> MakeCashbackOperationResponseSchema:
+        response = self.make_cashback_operation_api(card_id, account_id)
         return MakeCashbackOperationResponseSchema.model_validate_json(response.text)
 
-    def make_transfer_operation_api(self, request: MakeTransferOperationRequestSchema) -> Response:
+    def make_transfer_operation_api(self, card_id: str, account_id: str) -> Response:
         """
                Выполняет POST-запрос для создания операции перевода.
 
-               :param request: Словарь с status, amount, cardId, accountId
+               :params card_id, account_id
                :return: Объект httpx.Response с результатом операции.
                """
+        request = MakeTransferOperationRequestSchema(card_id=card_id, account_id=account_id)
         return self.post("/api/v1/operations/make-transfer-operation", json=request.model_dump(by_alias=True))
 
-    def make_transfer_operation(self, request: MakeTransferOperationRequestSchema) -> MakeTransferOperationResponseSchema:
-        response = self.make_transfer_operation_api(request)
+    def make_transfer_operation(self, card_id: str, account_id: str) -> MakeTransferOperationResponseSchema:
+        response = self.make_transfer_operation_api(card_id, account_id)
         return MakeTransferOperationResponseSchema.model_validate_json(response.text)
 
-    def make_purchase_operation_api(self, request: MakePurchaseOperationRequestSchema) -> Response:
+    def make_purchase_operation_api(self, card_id: str, account_id: str) -> Response:
         """
                  Выполняет POST-запрос для создания операции покупки.
 
-                 :param request: Словарь с status, amount, cardId, accountId, category
+                 :params card_id, account_id
                  :return: Объект httpx.Response с результатом операции.
                  """
+        request = MakePurchaseOperationRequestSchema(card_id=card_id, account_id=account_id)
         return self.post("/api/v1/operations/make-purchase-operation", json=request.model_dump(by_alias=True))
 
-    def make_purchase_operation(self, request: MakePurchaseOperationRequestSchema) -> MakePurchaseOperationResponseSchema:
-        response = self.make_purchase_operation_api(request)
+    def make_purchase_operation(self, card_id: str, account_id: str) -> MakePurchaseOperationResponseSchema:
+        response = self.make_purchase_operation_api(card_id, account_id)
         return MakePurchaseOperationResponseSchema.model_validate_json(response.text)
 
-    def make_bill_payment_operation_api(self, request: MakeBillPaymentOperationRequestSchema) -> Response:
+    def make_bill_payment_operation_api(self, card_id: str, account_id: str) -> Response:
         """
-                       Выполняет POST-запрос для создания операции оплаты по счету.
+        Выполняет POST-запрос для создания операции оплаты по счету.
 
-                       :param request: Словарь с status, amount, cardId, accountId, category
-                       :return: Объект httpx.Response с результатом операции.
-                       """
+        :params card_id, account_id
+        :return: Объект httpx.Response с результатом операции.
+        """
+        request = MakeBillPaymentOperationRequestSchema(card_id=card_id, account_id=account_id)
         return self.post("/api/v1/operations/make-bill-payment-operation", json=request.model_dump(by_alias=True))
 
-    def make_bill_payment_operation(self,
-                                    request: MakeBillPaymentOperationRequestSchema) -> MakeBillPaymentOperationResponseSchema:
-        response = self.make_bill_payment_operation_api(request)
+    def make_bill_payment_operation(self, card_id: str, account_id: str) -> MakeBillPaymentOperationResponseSchema:
+        response = self.make_bill_payment_operation_api(card_id, account_id)
         return MakeBillPaymentOperationResponseSchema.model_validate_json(response.text)
 
-    def make_cash_withdrawal_operation_api(self, request: MakeCashWithdrawalOperationRequestSchema) -> Response:
+    def make_cash_withdrawal_operation_api(self, card_id: str, account_id: str) -> Response:
         """
                            Выполняет POST-запрос для создания операции снятия наличных денег.
 
-                           :param request: Словарь с status, amount, cardId, accountId, category
+                           :params card_id, account_id
                            :return: Объект httpx.Response с результатом операции.
                            """
+        request = MakeCashWithdrawalOperationRequestSchema(card_id=card_id, account_id=account_id)
         return self.post("/api/v1/operations/make-cash-withdrawal-operation", json=request.model_dump(by_alias=True))
 
-    def make_cash_withdrawal_operation(self,
-                                       request: MakeCashWithdrawalOperationRequestSchema) -> MakeCashWithdrawalOperationResponseSchema:
-        response = self.make_cash_withdrawal_operation_api(request)
+    def make_cash_withdrawal_operation(self, card_id: str,
+                                       account_id: str) -> MakeCashWithdrawalOperationResponseSchema:
+        response = self.make_cash_withdrawal_operation_api(card_id, account_id)
         return MakeCashWithdrawalOperationResponseSchema.model_validate_json(response.text)
 
 
