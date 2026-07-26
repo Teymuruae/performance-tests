@@ -1,28 +1,24 @@
-from locust import HttpUser, wait_time, task
-from tools.fakers import fake
+from locust import User, wait_time, task
+from clients.http.gateway.users.client import build_users_gateway_locust_http_client, UsersGatewayHTTPClient
+from clients.http.gateway.accounts.client import build_accounts_gateway_locust_http_client, AccountsGatewayHTTPClient
+from clients.http.gateway.users.schema import CreateUserResponseSchema
 
 
-class OpenDebitCardAccountScenarioUser(HttpUser):
-    user_id: int
+class OpenDebitCardAccountScenarioUser(User):
+    host = 'localhost'
+
+    create_user_response: CreateUserResponseSchema
+    users_gateway_client: UsersGatewayHTTPClient
+    accounts_gateway_client: AccountsGatewayHTTPClient
 
     wait_time.between(2, 4)
 
     def on_start(self) -> None:
-        create_user_request = {
-            "email": fake.email(),
-            "lastName": fake.last_name(),
-            "firstName": fake.first_name(),
-            "middleName": fake.middle_name(),
-            "phoneNumber": fake.phone_number()
-        }
+        self.users_gateway_client = build_users_gateway_locust_http_client(self.environment)
+        self.accounts_gateway_client = build_accounts_gateway_locust_http_client(self.environment)
 
-        create_user_response = self.client.post(url='/api/v1/users', json=create_user_request)
-
-        self.user_id = create_user_response.json()['user']['id']
+        self.create_user_response = self.users_gateway_client.create_user()
 
     @task
     def open_debit_card_account(self):
-        open_debit_card_account_request = {
-            "userId": self.user_id
-        }
-        self.client.post(url='/api/v1/accounts/open-debit-card-account', json=open_debit_card_account_request)
+        self.accounts_gateway_client.open_debit_card_account(user_id=self.create_user_response.user.id)
