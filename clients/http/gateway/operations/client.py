@@ -1,6 +1,6 @@
 from httpx import Response, QueryParams
 
-from clients.http.client import HTTPClient
+from clients.http.client import HTTPClient, HTTPClientExtensions
 from clients.http.gateway.client import build_gateway_http_client
 from clients.http.gateway.operations.schema import GetOperationResponseSchema, GetReceiptResponseSchema, \
     GetOperationsQuerySchema, GetOperationsResponseSchema, GetOperationsSummaryQuerySchema, \
@@ -21,10 +21,11 @@ class OperationsGatewayHTTPClient(HTTPClient):
         """
         Выполняет GET-запрос на получение информации об операции по operation_id.
 
-        :param operation_id: id операции.
+        :param operation_id: ID операции.
         :return: Объект httpx.Response с данными об операции.
         """
-        return self.get(f"/api/v1/operations/{operation_id}")
+        return self.get(f"/api/v1/operations/{operation_id}",
+                        extensions=HTTPClientExtensions(route="/api/v1/operations/{operation_id}"))
 
     def get_operation(self, operation_id: str) -> GetOperationResponseSchema:
         response = self.get_operation_api(operation_id)
@@ -34,10 +35,11 @@ class OperationsGatewayHTTPClient(HTTPClient):
         """
         Выполняет GET-запрос на получение чека по операции по operation_id.
 
-        :param operation_id: id операции.
+        :param operation_id: ID операции.
         :return: Объект httpx.Response с данными об операции.
         """
-        return self.get(f"/api/v1/operations/operation-receipt/{operation_id}")
+        return self.get(f"/api/v1/operations/operation-receipt/{operation_id}",
+                        extensions=HTTPClientExtensions(route="/api/v1/operations/operation-receipt/{operation_id}"))
 
     def get_operation_receipt(self, operation_id: str) -> GetReceiptResponseSchema:
         response = self.get_operation_receipt_api(operation_id)
@@ -50,7 +52,8 @@ class OperationsGatewayHTTPClient(HTTPClient):
         :param query: Словарь с параметрами запроса, например: {'accountId': '123'}.
         :return: Объект httpx.Response с данными об операции.
         """
-        return self.get(f"/api/v1/operations", params=QueryParams(**query.model_dump(by_alias=True)))
+        return self.get(f"/api/v1/operations", params=QueryParams(**query.model_dump(by_alias=True)),
+                        extensions=HTTPClientExtensions(route="/api/v1/operations"))
 
     def get_operations(self, query: GetOperationsQuerySchema) -> GetOperationsResponseSchema:
         response = self.get_operations_api(query)
@@ -64,7 +67,8 @@ class OperationsGatewayHTTPClient(HTTPClient):
            :return: Объект httpx.Response с данными об операции.
            """
         return self.get(f"/api/v1/operations/operations-summary.",
-                        params=QueryParams(**query.model_dump(by_alias=True)))
+                        params=QueryParams(**query.model_dump(by_alias=True)),
+                        extensions=HTTPClientExtensions(route="/api/v1/operations/operations-summary."))
 
     def get_operations_summary(self, query: GetOperationsSummaryQuerySchema) -> GetOperationsSummaryResponseSchema:
         response = self.get_operations_summary_api(query)
