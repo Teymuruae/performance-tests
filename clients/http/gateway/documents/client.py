@@ -49,7 +49,7 @@ def build_documents_gateway_http_client() -> DocumentsGatewayHTTPClient:
     """
     return DocumentsGatewayHTTPClient(client=build_gateway_http_client())
 
-def build_operations_gateway_locust_http_client(environment: Environment) -> DocumentsGatewayHTTPClient:
+def build_documents_gateway_locust_http_client(environment: Environment) -> DocumentsGatewayHTTPClient:
     """
     Функция создаёт экземпляр DocumentsGatewayHTTPClient адаптированного под Locust.
 
