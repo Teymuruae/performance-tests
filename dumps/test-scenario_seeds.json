@@ -1,0 +1,40 @@
+{
+  "users": [
+    {
+      "user_id": "5520bb8e-ab65-40fb-b0a2-e08218a3975b",
+      "deposit_accounts": [],
+      "savings_accounts": [],
+      "debit_card_accounts": [],
+      "credit_card_accounts": [
+        {
+          "account_id": "8570c725-337a-4d47-bf96-20174e66bcf2",
+          "physical_cards": [
+            {
+              "card_id": "eea16b69-39a4-4113-b689-568620fd27c8"
+            }
+          ],
+          "top_up_operations": [],
+          "purchase_operations": []
+        }
+      ]
+    },
+    {
+      "user_id": "ea2ec10f-ca6d-440f-b9de-9e2c35b6212e",
+      "deposit_accounts": [],
+      "savings_accounts": [],
+      "debit_card_accounts": [],
+      "credit_card_accounts": [
+        {
+          "account_id": "b66b4254-03f7-45b8-ba06-38c42c5aea29",
+          "physical_cards": [
+            {
+              "card_id": "68b137c2-005a-40ac-ae37-344a72f089e4"
+            }
+          ],
+          "top_up_operations": [],
+          "purchase_operations": []
+        }
+      ]
+    }
+  ]
+}
