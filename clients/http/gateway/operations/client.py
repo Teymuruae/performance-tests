@@ -67,9 +67,9 @@ class OperationsGatewayHTTPClient(HTTPClient):
            :param query: Словарь с параметрами запроса, например: {'accountId': '123'}.
            :return: Объект httpx.Response с данными об операции.
            """
-        return self.get(f"/api/v1/operations/operations-summary.",
+        return self.get(f"/api/v1/operations/operations-summary",
                         params=QueryParams(**query.model_dump(by_alias=True)),
-                        extensions=HTTPClientExtensions(route="/api/v1/operations/operations-summary."))
+                        extensions=HTTPClientExtensions(route="/api/v1/operations/operations-summary"))
 
     def get_operations_summary(self, query: GetOperationsSummaryQuerySchema) -> GetOperationsSummaryResponseSchema:
         response = self.get_operations_summary_api(query)
