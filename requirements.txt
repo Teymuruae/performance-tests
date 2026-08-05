@@ -3,3 +3,4 @@ httpx
 locust
 pydantic
 pydantic-settings
+grpcio
