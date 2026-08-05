@@ -1,4 +1,5 @@
 termcolor
-redis
-fastapi
-uvicorn
+httpx
+locust
+pydantic
+pydantic-settings
