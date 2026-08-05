@@ -59,8 +59,6 @@ class MakeTopUpOperationSequentialTaskSet(GatewayHTTPSequentialTaskSet):
         # Получаем агрегированную статистику по операциям
         if not self.open_debit_card_account_response:
             return
-        print("ID ++++++++" *30)
-        print(self.open_debit_card_account_response.account.id)
         self.operations_gateway_client.get_operations_summary(
             GetOperationsSummaryQuerySchema(
                 account_id=self.open_debit_card_account_response.account.id
