@@ -2,6 +2,7 @@ import time
 
 from httpx import Response
 from locust.env import Environment
+from tools.routes import APIRoutes
 
 from clients.http.client import HTTPClient, HTTPClientExtensions
 from clients.http.gateway.client import build_gateway_http_client, build_gateway_locust_http_client
@@ -26,7 +27,8 @@ class UsersGatewayHTTPClient(HTTPClient):
         :param user_id: Идентификатор пользователя.
         :return: Ответ от сервера (объект httpx.Response).
         """
-        return self.get(f"/api/v1/users/{user_id}", extensions=HTTPClientExtensions(route="/api/v1/users/{user_id}"))
+        return self.get(f"{APIRoutes.USERS}/{user_id}",
+                        extensions=HTTPClientExtensions(route=f"{APIRoutes.USERS}/{{user_id}}"))
 
     # Теперь используем pydantic-модель для аннотации
     def create_user_api(self, request: CreateUserRequestSchema) -> Response:
@@ -37,7 +39,7 @@ class UsersGatewayHTTPClient(HTTPClient):
         :return: Ответ от сервера (объект httpx.Response).
         """
         # Сериализуем модель в словарь с использованием alias
-        return self.post("/api/v1/users", json=request.model_dump(by_alias=True))
+        return self.post(APIRoutes.USERS, json=request.model_dump(by_alias=True))
 
     def get_user(self, user_id: str) -> GetUserResponseSchema:
         response = self.get_user_api(user_id)
@@ -56,6 +58,7 @@ def build_users_gateway_http_client() -> UsersGatewayHTTPClient:
     :return: Готовый к использованию UsersGatewayHTTPClient.
     """
     return UsersGatewayHTTPClient(client=build_gateway_http_client())
+
 
 # Новый билдер для нагрузочного тестирования
 def build_users_gateway_locust_http_client(environment: Environment) -> UsersGatewayHTTPClient:
